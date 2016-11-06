@@ -1,81 +1,97 @@
-/*global module:false*/
-module.exports = function(grunt) {
+/* global module:false */
+module.exports = function (grunt) {
+  const srcFilesPattern = 'src/js/*';
+  const testFilesPattern = 'src/test/*';
+
+  /**
+   *
+   * @param {string} nodeModuleDir
+   * @param {string} fileName
+   * @param {String[]} destinations
+   *
+   * @return {Object[]}
+   */
+  const getVendorFileConfig = function (nodeModuleDir, fileName, destinations) {
+    const valuesToReturn = [];
+
+    destinations.forEach((destination) => {
+      valuesToReturn.push({
+        cwd: 'node_modules/'.concat(nodeModuleDir),
+        src: [fileName],
+        dest: destination,
+      });
+    });
+
+    return valuesToReturn;
+  }
+
 
   // Project configuration.
   grunt.initConfig({
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+    '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+    '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
+    '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+    ' %> */\n',
+
     // Task configuration.
     concat: {
       options: {
         banner: '<%= banner %>',
-        stripBanners: true
+        stripBanners: true,
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
-      }
+        src: ['src/js/*.js'],
+        dest: 'dist/<%= pkg.name %>.js',
+      },
     },
-    uglify: {
+    eslint: {
       options: {
-        banner: '<%= banner %>'
+        format: 'stylish',
       },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
-      }
+      target: ['src/js/*'],
     },
-    jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {}
+    sync: {
+      main: {
+        files: [
+          getVendorFileConfig('jquery/dist', 'jquery.js', ['src/scripts', 'dist/scripts']),
+          getVendorFileConfig('moment', 'moment.js', ['src/scripts', 'dist/scripts']),
+          getVendorFileConfig('fullcalendar/dist', 'fullcalendar.js', ['src/scripts', 'dist/scripts']),
+          getVendorFileConfig('fullcalendar/dist', 'fullcalendar.css', ['src/css', 'dist/css']),
+        ],
+
+        // Display log messages when copying files
+        verbose: true,
+
+        failOnError: true,
       },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
-      }
     },
-    qunit: {
-      files: ['test/**/*.html']
-    },
+
+    // qunit: {
+    //   files: ['src/test/**/*.html'],
+    // },
     watch: {
       gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+        files: srcFilesPattern,
+        tasks: ['eslint:gruntfile'],
       },
       lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
-      }
-    }
+        files: testFilesPattern,
+        tasks: ['eslint:lib_test', 'qunit'],
+      },
+    },
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-sync');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
-
+  grunt.registerTask('default', ['sync', 'concat', 'eslint', // 'qunit',
+  ]);
 };

@@ -1,0 +1,13 @@
+.calendar-container {
+    width: 25%;
+    float: left;
+}
+
+.add-event-container {
+    width: 75%;
+    margin-left: 20px;
+}
+
+#add-button {
+    margin-left: 10px;
+}

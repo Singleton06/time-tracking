@@ -1,13 +1,44 @@
 {
+  "name": "timeTracking",
+  "version": "0.0.1",
+  "title": "timeTracking",
+  "description": "Project for tracking time spent on various tasks.",
+  "homepage": "http://www.google.com",
+  "author": {
+    "name": "Dustin Singleton"
+  },
+  "scripts": {
+    "build-webpack": "webpack",
+    "dev-server": "webpack-dev-server --inline"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
   "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "css-loader": "^0.25.0",
+    "eslint": "^3.4.0",
+    "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-plugin-import": "^1.14.0",
     "grunt": "~0.4.5",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-qunit": "~0.5.2",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-uglify": "~0.5.0"
+    "grunt-contrib-qunit": "~0.5.2",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-eslint": "^19.0.0",
+    "grunt-sync": "^0.6.2",
+    "html-webpack-plugin": "^2.24.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.16.0",
+    "fullcalendar": "^3.0.0-beta",
+    "jquery": "^3.1.1",
+    "moment": "^2.14.1"
   }
 }
