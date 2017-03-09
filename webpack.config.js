@@ -23,7 +23,7 @@ module.exports = {
       loader: 'style-loader!css-loader',
     }],
   },
-  devtool: 'sourcemap',
+  devtool: 'cheap-module-eval-source-map',
   devserver: {
     colors: true,
     contentBase: './dist',

@@ -9,6 +9,7 @@
     "eslint": false
   },
   "rules": {
-    "max-len": ["error", 120]
+    "max-len": ["error", 120],
+    "no-use-before-define": false
   }
 }

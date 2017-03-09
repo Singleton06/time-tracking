@@ -1,13 +1,24 @@
+html,body {
+    height:100%;
+    margin: 0px;
+}
+
+body {
+    padding: 10px;
+}
+
 .calendar-container {
     width: 25%;
     float: left;
+    height: 80%;
 }
 
 .add-event-container {
     width: 75%;
-    margin-left: 20px;
+    float: right;
+    height: 100%;
 }
 
-#add-button {
-    margin-left: 10px;
+.add-event-fields {
+    margin-left: 20px;
 }

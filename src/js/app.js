@@ -1,33 +1,22 @@
 import 'babel-polyfill';
 
 import $ from 'jquery';
-import moment from 'moment';
-import 'fullcalendar';
-import 'fullcalendarCSS';
 import 'appCSS';
+import Calendar from './calendar/calendar';
+import AddEventComponent from './add_event/add_event_component';
 
-function initCalendar() {
-  $('#calendar').fullCalendar({
-    defaultView: 'basicDay',
-  });
-}
-
-function addOnButtonClickForAddButton() {
-  $('#add-button').click(() => {
-    $('#calendar').fullCalendar('renderEvent', {
-      title: 'testing title',
-      start: moment().toDate(),
-      end: moment().add(1, 'hour').toDate(),
-    });
-  });
-}
+const calendar = new Calendar();
 
 function init() {
-  $('body').append($('<div/>').attr('id', 'calendar'));
-  initCalendar();
-  addOnButtonClickForAddButton();
+  const calendarDivContainer = $('<div/>').addClass('calendar-container');
+  calendarDivContainer.append($('<div/>').attr('id', 'calendar'));
+
+  $('body').append(calendarDivContainer);
+  calendar.initializeCalendar($('#calendar'));
+
+  const addEventContainer = $('<div/>').addClass('add-event-container');
+  $('body').append(addEventContainer);
+  new AddEventComponent(addEventContainer, calendar);
 }
 
 $(document).ready(init());
-
-
